@@ -1,0 +1,24 @@
+.App {
+  text-align: center;
+}
+
+
+.likeIcon{
+  margin-right: 20px;
+  color:rgb(255, 255, 255);
+  transition: color .2s;
+}
+.likeIcon:hover{
+  color:rgb(161, 13, 13)
+}
+
+
+.userIcon{
+  margin: 15px;
+  color: white;
+  transition: color .5s;
+}
+
+.userIcon:hover{
+  color:rgb(0, 0, 0)
+}
