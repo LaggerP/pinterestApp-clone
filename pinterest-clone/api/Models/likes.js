@@ -10,6 +10,10 @@ const Likes = conecction.define('likes',{
         type: Sequelize.STRING,
         allowNull: false
     },
+    email_user:{
+        type: Sequelize.STRING,
+        allowNull: false
+    }
 })
 
 module.exports = Likes

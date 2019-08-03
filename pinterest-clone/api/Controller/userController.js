@@ -1,11 +1,6 @@
 const UserModel = require('../Models/user.js')
 const LikesModel = require('../Models/likes.js')
 
-
-const holaMundo = (req, res) => {
-    res.json({ response: 'Hola mundo' })
-}
-
 const findAllUser = async (req, res) => {
     const user = await UserModel.findAll()
     res.json({ result: user })
@@ -23,13 +18,18 @@ const findLikeById = async (req, res) => {
     res.json({ result: like })
 }
 
+const findLikesByUserEmail = async (req, res) => {
+    const email_user = req.params.email_user
+    const Userlikes = await LikesModel.findAll({ where: { email_user } })
+    res.json({ result: Userlikes })
+}
+
 const createLike = async (req, res) => {
-    const { url, id_user } = req.body
-    const newLike = await LikesModel.create({ url, id_user })
+    const { url, id_user, email_user } = req.body
+    const newLike = await LikesModel.create({ url, id_user, email_user })
     console.log("Like creado", newLike.id)
     res.json(newLike)
 }
-
 
 const login = async (req, res) => {
     const { mail, password } = req.body
@@ -54,10 +54,10 @@ const register = async (req, res) => {
 }
 
 module.exports = {
-    holaMundo,
     findAllUser,
     findUserById,
     findLikeById,
+    findLikesByUserEmail,
     createLike,
     login,
     register,

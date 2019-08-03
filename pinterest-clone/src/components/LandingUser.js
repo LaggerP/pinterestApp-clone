@@ -7,7 +7,6 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Button from '@material-ui/core/Button';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-
 import auth from '../auth.js'
 
 
@@ -63,10 +62,9 @@ class User extends Component {
     }
 
     likePhoto = (e) => {
-        console.log("click")
         if (auth.isAuthenticated()) {
             const apiURL = 'http://localhost:5000/api/likes';
-            const data = { url: e, id_user: auth.user.uid };
+            const data = { url: e, id_user: auth.user.uid, email_user: auth.user.email };
             fetch(apiURL, {
                 method: 'POST',
                 body: JSON.stringify(data),
@@ -83,7 +81,6 @@ class User extends Component {
 
     render() {
         const classes = this.props;
-        console.log(auth.user.uid)
         return (
             <React.Fragment>
                 <UserNav />

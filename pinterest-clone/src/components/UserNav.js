@@ -45,8 +45,10 @@ class UserNav extends Component {
                             Pinterest Clone
                         </Typography>
                         <h5>Bienvenido {auth.user.email}</h5>
+                       
+                        <Button style={{ marginLeft: 20 }} component={Link} to="/me" variant="contained" color="secondary"> <i className="fa fa-user"></i> Perfil</Button>
+                        <Button style={{ marginLeft: 20 }} component={Link} to="/profiles" variant="contained" color="secondary"> <i className="fa fa-users"></i> Buscar Perfil</Button>
                         <Button variant="contained" style={{ marginLeft: 20 }} color="secondary" onClick={this.authLogOut}>Logout</Button>
-                        <Button style={{ marginLeft: 20 }} component={Link} to="/me" variant="contained" color="secondary"> <i className="fa fa-user"></i>Perfil</Button>
                     </Toolbar>
                 </AppBar>
             </div>

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import '../App.css'
 import UserNav from './UserNav.js'
-import Container from '@material-ui/core/Container';
 import { withStyles } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Button from '@material-ui/core/Button';
+import InputBase from '@material-ui/core/InputBase';
 import { Link } from 'react-router-dom'
 import auth from '../auth.js'
 
@@ -31,28 +32,27 @@ const styles = theme => ({
     },
     input: {
         display: 'none',
-    },
+    }
 });
 
-class UserProfile extends Component {
+class Profiles extends Component {
     state = {
         likedPhotos: [],
         pagina: 0,
+        userEmail: '',
     }
 
-    componentDidMount() {
-        this.getPhotosFromAPI();
-    }
+    handleChange = name => event => this.setState({ [name]: event.target.value })
 
-    getPhotosFromAPI = () => {
+    getUserPhotosFromAPI = () => {
         if (auth.isAuthenticated()) {
-            const apiURL = 'http://localhost:5000/api/likes/' + auth.user.uid;
-            const { likedPhotos } = this.state
+            const apiURL = 'http://localhost:5000/api/Userlikes/' + this.state.userEmail;
+            console.log(apiURL)
             fetch(apiURL)
                 .then(response => response.json())
                 .then(json =>
                     this.setState({
-                        likedPhotos: [...likedPhotos, ...json.result]
+                        likedPhotos: json.result
                     }))
                 .catch(error => console.log(error))
         } else {
@@ -65,11 +65,26 @@ class UserProfile extends Component {
         return (
             <React.Fragment>
                 <UserNav />
-
                 <Container style={{ marginTop: 80, padding: 30 }} maxWidth="lg">
+                    <h4>Buscador de fotos likeadas por otros usuarios:</h4>
                     <Grid container style={{ marginButtom: 20 }} justify="center">
-                        <Button style={{ marginLeft: 20 }} component={Link} to="/home" variant="contained" color="secondary"> <i className="fa fa-angle-double-left"></i>  Volver al inicio</Button>
+                        <InputBase
+                            className={classes.inputSearch}
+                            placeholder="Email usuario"
+                            onChange={this.handleChange('userEmail')}
+                        />
+
+                        <Button
+                            type="submit"
+                            size="small"
+                            className={classes.button}
+                            onClick={this.getUserPhotosFromAPI}
+                        >
+                            Buscar <i style={{ marginLeft: 5 }} className="fa fa-search"></i>
+                        </Button>
                     </Grid>
+
+                    <hr />
                     {
                         (this.state.likedPhotos.length !== 0)
                             ?
@@ -79,7 +94,6 @@ class UserProfile extends Component {
                                         {this.state.likedPhotos.map(photo => (
                                             <GridListTile key={photo.id_user} cols={photo.featured ? 2 : 1} rows={photo.featured ? 2 : 1}>
                                                 <img src={photo.url} alt={photo.alt_description} />
-
                                             </GridListTile>
 
                                         ))}
@@ -87,10 +101,10 @@ class UserProfile extends Component {
                                 </div>
                             )
                             :
-                            'nop'
+                            "No hay información asociada a usuario"
                     }
                     <Grid container style={{ marginTop: 20 }} justify="center">
-                        <Button style={{ marginLeft: 20 }} component={Link} to="/home" variant="contained" color="secondary"> <i className="fa fa-angle-double-left"></i>  Volver al inicio</Button>
+                        <Button style={{ marginLeft: 20 }} component={Link} to="/home" variant="contained" color="secondary"> Volver al inicio</Button>
                     </Grid>
                 </Container>
             </React.Fragment>
@@ -98,4 +112,4 @@ class UserProfile extends Component {
     }
 }
 
-export default withStyles(styles)(UserProfile)
+export default withStyles(styles)(Profiles)
